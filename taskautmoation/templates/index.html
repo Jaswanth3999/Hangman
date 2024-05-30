@@ -2,13 +2,79 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>File Organizer</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            margin: 0;
+        }
+        h1 {
+            color: #333;
+        }
+        .chat-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: center;
+        }
+        input[type="text"] {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            padding: 10px 15px;
+            color: white;
+            background-color: #007BFF;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #response {
+            margin-top: 15px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            min-height: 30px;
+        }
+    </style>
+    <script>
+        async function sendMessage() {
+            const userMessage = document.getElementById('message').value;
+            const response = await fetch('/chat', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ message: userMessage }),
+            });
+            const data = await response.json();
+            document.getElementById('response').innerText = data.response;
+        }
+    </script>
 </head>
 <body>
-    <h1>File Organizer</h1>
-    <a href="{{ url_for('upload_file') }}">Upload Files</a>
-    <form action="{{ url_for('organize') }}" method="post" style="margin-top: 20px;">
-        <button type="submit">Organize Files</button>
-    </form>
+    <h1>Chatbot</h1>
+    <div class="chat-container">
+        <input type="text" id="message" placeholder="Enter your message">
+        <button onclick="sendMessage()">Send</button>
+        <p id="response"></p>
+    </div>
 </body>
 </html>
