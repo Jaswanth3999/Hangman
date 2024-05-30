@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Hangman Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        .game-container {
+            text-align: center;
+        }
+        .word {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        .input-container {
+            margin-bottom: 20px;
+        }
+        .status {
+            font-size: 20px;
+            margin-top: 20px;
+        }
+        .reset-btn {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+        }
+        .reset-btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <h1>Hangman Game</h1>
+        <div class="clue">
+            <p><strong>Clue:</strong> {{ game.clue }}</p>
+        </div>
+        <div class="word">
+            {% for letter in game.guessed %}
+                {{ letter }}
+            {% endfor %}
+        </div>
+        <div class="input-container">
+            {% if game.status != 'win' and game.status != 'lose' %}
+                <form action="/guess" method="post">
+<input type="text" name="letter" maxlength="1" required>
+<button type="submit">Guess</button>
+</form>
+{% endif %}
+</div>
+<div class="status">
+{% if game.status == 'win' %}
+<p>Congratulations! You've won!</p>
+{% elif game.status == 'lose' %}
+<p>Game over! The word was "{{ game.word }}".</p>
+{% else %}
+<p>Attempts left: {{ game.attempts }}</p>
+<p>Guessed letters: {{ game.guessed_letters | join(', ') }}</p>
+{% endif %}
+</div>
+<div>
+<a href="/reset" class="reset-btn">Reset Game</a>
+</div>
+</div>
+
+</body>
+</html>
